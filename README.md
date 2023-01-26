@@ -55,3 +55,28 @@ artist_id, name, location, lattitude, longitude
 **time - timestamps of records in songplays broken down into specific units**
 
 start_time, hour, day, week, month, year, weekday
+
+
+## Process
+In order to complete the project, I needed to build and ETL pipeline that extracts their data from S3, stages them in Redshift, and transforms data into a set of dimensional tables for their analytics team to continue finding insights in what songs their users are listening to. The task was to test the ETL pipeline by running queries given to me by the analytics team from Sparkify. In order to save time in loading the data i did not load the full datasets and decided to go with a sample set for which I ran queries on via the query editor in Redshift in the cluster I had created there (with an associated IAM role, user and Region).
+
+**Example of Queries**
+1. List of top 10 users, their first and last name and info on if they are subscribers or listening via free service:
+
+SELECT first_name, last_name, level
+FROM user_table
+GROUP BY first_name, last_name, level
+ORDER BY COUNT(*) Desc
+LIMIT    10;   
+
+2. List of top 10 most listened songs from my sample:
+
+SELECT sp.song_id, a.name, s.title
+FROM songplay_table sp
+JOIN song_table s
+ON sp.song_id = s.song_id
+JOIN artist_table a
+ON s.artist_id = a.artist_id
+GROUP BY sp.song_id, a.name, s.title
+ORDER BY COUNT (*) DESC
+LIMIT 10;
