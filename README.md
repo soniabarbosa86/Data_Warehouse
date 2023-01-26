@@ -64,19 +64,31 @@ In order to complete the project, I needed to build and ETL pipeline that extrac
 1. List of top 10 users, their first and last name and info on if they are subscribers or listening via free service:
 
 SELECT first_name, last_name, level
+
 FROM user_table
+
 GROUP BY first_name, last_name, level
+
 ORDER BY COUNT(*) Desc
+
 LIMIT    10;   
 
 2. List of top 10 most listened songs from my sample:
 
 SELECT sp.song_id, a.name, s.title
+
 FROM songplay_table sp
+
 JOIN song_table s
+
 ON sp.song_id = s.song_id
+
 JOIN artist_table a
+
 ON s.artist_id = a.artist_id
+
 GROUP BY sp.song_id, a.name, s.title
+
 ORDER BY COUNT (*) DESC
+
 LIMIT 10;
